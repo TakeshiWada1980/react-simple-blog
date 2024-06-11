@@ -3,14 +3,16 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
 } from "react-router-dom";
-import App from "./App";
 import Articles from "./Articles";
+import Contact from "./Contact";
+import Layout from "./Layout";
 
 const routes = createRoutesFromElements(
   <>
-    <Route path="/" element={<App />}>
+    <Route path="/" element={<Layout />}>
       <Route index element={<Articles />} />
-      <Route path="/Articles" element={<Articles />} />
+      <Route path="/articles" element={<Articles />} />
+      <Route path="/contact" element={<Contact />} />
     </Route>
   </>
 );

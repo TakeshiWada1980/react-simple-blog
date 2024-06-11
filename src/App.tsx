@@ -1,19 +1,5 @@
-import React from "react";
-import cn from "classnames";
-import Articles from "./Articles";
-import { Outlet } from "react-router-dom";
+import Router from "./Router";
+import { RouterProvider } from "react-router";
 
-function App() {
-  return (
-    <>
-      <div className={cn("text-xl font-bold")}>
-        <h1>Hello World</h1>
-      </div>
-      <div>
-        <Outlet />
-      </div>
-    </>
-  );
-}
-
+const App = () => <RouterProvider router={Router} />;
 export default App;
