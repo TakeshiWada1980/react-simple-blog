@@ -1,22 +1,12 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { PostType } from "./data/types";
+import { useParams } from "react-router-dom";
 
-type TodoProps = {
-  post: PostType;
-};
-
-const Article: React.FC<TodoProps> = (props) => {
-  const { title, thumbnailUrl, createdAt, categories, content } = props.post;
+const Article = () => {
+  const { id } = useParams();
   return (
     <>
-      <div className="mb-3 border-stone-500 border hover:border-stone-700">
-        <Link to="/contact">
-          <div className="p-3">
-            <div>{title}</div>
-          </div>
-        </Link>
-      </div>
+      <div>Article {id ? id : "id未指定"}</div>
+      <div>ここにブログ記事を配置</div>
     </>
   );
 };

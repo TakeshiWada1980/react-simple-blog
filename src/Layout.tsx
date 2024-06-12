@@ -1,14 +1,23 @@
 import React from "react";
 import cn from "classnames";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import { AnimatePresence, motion } from "framer-motion";
+
+const pageTransition = {
+  initial: { opacity: 0, y: 100 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.5 },
+};
 
 const Layout = () => {
+  const location = useLocation();
+
   return (
     <>
-      <div className="bg-slate-800 text-white px-3 sm:px-0 ">
-        <div className="container mx-auto flex justify-between items-center md:w-2/3 xl:w-1/2">
+      <header className="bg-slate-800 text-white px-3 sm:px-0 ">
+        <nav className="container mx-auto flex justify-between items-center md:w-2/3 xl:w-1/2">
           <Link to="/" className="py-3 font-bold">
             Blog
           </Link>
@@ -16,12 +25,16 @@ const Layout = () => {
             <FontAwesomeIcon className={cn("mr-2")} icon={faEnvelope} />
             お問い合わせ
           </Link>
-        </div>
-      </div>
+        </nav>
+      </header>
 
-      <div className="container mx-auto px-3 sm:px-0 md:w-2/3 xl:w-1/2">
-        <Outlet />
-      </div>
+      <AnimatePresence mode="wait">
+        <motion.div key={location.pathname} {...pageTransition}>
+          <article className="container mx-auto px-3 sm:px-0 md:w-2/3 xl:w-1/2">
+            <Outlet />
+          </article>
+        </motion.div>
+      </AnimatePresence>
     </>
   );
 };

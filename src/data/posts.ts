@@ -1,4 +1,5 @@
-export const posts = [
+import { PostType } from "../types";
+export const posts: PostType[] = [
   {
     id: 1,
     title: "記事タイトル１",

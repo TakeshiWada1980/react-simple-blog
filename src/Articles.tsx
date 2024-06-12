@@ -1,13 +1,13 @@
 import React from "react";
 import { posts } from "./data/posts";
-import Article from "./Article";
+import ArticleSimmary from "./ArticleSummary";
 
 const Articles = () => {
   return (
     <>
       <div className="mt-5">
         {posts.map((post) => (
-          <Article key={post.id} post={post} />
+          <ArticleSimmary key={post.id} post={post} />
         ))}
       </div>
     </>
