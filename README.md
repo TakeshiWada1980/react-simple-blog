@@ -1,2 +1,3 @@
 # React Simple Blog
 
+## license
