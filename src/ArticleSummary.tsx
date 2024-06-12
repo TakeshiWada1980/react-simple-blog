@@ -29,7 +29,7 @@ const ArticleSimmary: React.FC<ArticleSimmaryProps> = (props) => {
   return (
     <>
       <div className="mb-4 border-stone-500 border hover:border-stone-700">
-        <Link to="/contact">
+        <Link to="/article">
           <div className="p-3">
             <div className="flex justify-between items-center">
               {/* 日付 */}
