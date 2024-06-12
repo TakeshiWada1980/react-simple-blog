@@ -4,13 +4,11 @@ import ArticleSimmary from "./ArticleSummary";
 
 const Articles = () => {
   return (
-    <>
-      <div className="mt-5">
-        {posts.map((post) => (
-          <ArticleSimmary key={post.id} post={post} />
-        ))}
-      </div>
-    </>
+    <div className="mt-5">
+      {posts.map((post) => (
+        <ArticleSimmary key={post.id} post={post} />
+      ))}
+    </div>
   );
 };
 
