@@ -30,7 +30,7 @@ const Layout = () => {
 
       <AnimatePresence mode="wait">
         <motion.div key={location.pathname} {...pageTransition}>
-          <article className="container mx-auto px-3 sm:px-0 md:w-2/3 xl:w-1/2">
+          <article className="container mx-auto px-3 md:w-2/3 xl:w-1/2">
             <Outlet />
           </article>
         </motion.div>

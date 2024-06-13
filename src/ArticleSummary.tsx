@@ -10,7 +10,7 @@ type Props = {
 };
 
 const ArticleSimmary: React.FC<Props> = (props) => {
-  const { title, thumbnailUrl, createdAt, categories, content } = props.post;
+  const { id, title, createdAt, categories, content } = props.post;
 
   const createdAt2 = formatIso8601ToJpDateTime(createdAt);
   const sanitizedContent: string = DOMPurify.sanitize(content);
@@ -18,7 +18,7 @@ const ArticleSimmary: React.FC<Props> = (props) => {
   return (
     <Link
       className="block mb-4 border border-stone-500 hover:border-stone-700"
-      to="/article"
+      to={`/article/${id}`}
     >
       <div className="p-3">
         <div className="flex justify-between items-center">

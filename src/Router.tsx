@@ -7,6 +7,7 @@ import Articles from "./Articles";
 import Article from "./Article";
 import Contact from "./Contact";
 import Layout from "./Layout";
+import NotFound from "./NotFound";
 
 const routes = createRoutesFromElements(
   <>
@@ -15,6 +16,7 @@ const routes = createRoutesFromElements(
       <Route path="/articles" element={<Articles />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/article/:id?" element={<Article />} />
+      <Route path="*" element={<NotFound />} />
     </Route>
   </>
 );
