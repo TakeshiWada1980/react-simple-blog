@@ -16,7 +16,7 @@ const Article = () => {
     // 記事の検索・取得
     const post = posts.find((post) => post.id === Number(id));
     setPost(post);
-  }, []);
+  }, [id]);
 
   // 記事が見つからなかった場合の処理
   if (!post) {
