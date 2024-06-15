@@ -1,56 +1,59 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import useSWR from "swr";
 import { useParams } from "react-router-dom";
-import { posts } from "./data/posts";
-import { Post } from "./types";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGhost } from "@fortawesome/free-solid-svg-icons";
+import { BlogPostResponse } from "./types";
 import { formatIso8601ToJpDateTime } from "./utils/dateTimeUtils";
 import DOMPurify from "dompurify";
 import Tag from "./Tag";
+import { delayedFetcher } from "./utils/delayedFetcher";
+import { FetchLoading } from "./FetchLoading";
+import { FetchError } from "./FetchError";
+
+const postsApiEndpoint =
+  "https://1hmfpsvto6.execute-api.ap-northeast-1.amazonaws.com/dev/posts";
 
 const Article = () => {
-  const { id } = useParams();
-  const [post, setPost] = useState<Post | undefined>();
+  //
+  const { id } = useParams<{ id: string }>();
+  const { data, error, isLoading } = useSWR<BlogPostResponse>(
+    `${postsApiEndpoint}/${id}`,
+    delayedFetcher(2000)
+  );
 
-  useEffect(() => {
-    // 記事の検索・取得
-    const post = posts.find((post) => post.id === Number(id));
-    setPost(post);
-  }, [id]);
-
-  // 記事が見つからなかった場合の処理
-  if (!post) {
-    return (
-      <div className="mt-5">
-        <FontAwesomeIcon className="mr-2 text-slate-800" icon={faGhost} />
-        id={id || "(None)"} の投稿記事が見つかりません。
-      </div>
-    );
+  // Fetch failed
+  if (error) {
+    return <FetchError apiEndpoint={postsApiEndpoint} error={error} />;
   }
 
-  const createdAt2 = formatIso8601ToJpDateTime(post.createdAt);
-  const sanitizedContent: string = DOMPurify.sanitize(post.content);
+  // Fetch in progress
+  if (isLoading || !data) {
+    return <FetchLoading msg="記事を読み込んでいます..." />;
+  }
 
+  // Fetch succeeded
+  const createdAt = formatIso8601ToJpDateTime(data.post.createdAt);
+  const content: string = DOMPurify.sanitize(data.post.content);
+  const { thumbnailUrl, categories, title } = data.post;
   return (
     <div className="mt-5 flex flex-col justify-center">
       {/* サムネイル */}
-      <img src={post.thumbnailUrl} alt="サムネイル画像" />
+      <img src={thumbnailUrl} alt="サムネイル画像" />
       <div className="sm:px-4">
         {/* 日付 & カテゴリ*/}
         <div className="mt-3 flex justify-between items-center">
-          <div className="text-xs text-stone-500">{createdAt2}</div>
+          <div className="text-xs text-stone-500">{createdAt}</div>
           <div className="flex items-center space-x-1">
-            {post.categories.map((category) => (
+            {categories.map((category) => (
               <Tag name={category} key={category} />
             ))}
           </div>
         </div>
         {/* タイトル */}
-        <div className="mt-3 text-2xl">{post.title}</div>
+        <div className="mt-3 text-2xl">{title}</div>
         {/* 本文 */}
         <section
           className="mt-4"
-          dangerouslySetInnerHTML={{ __html: sanitizedContent }}
+          dangerouslySetInnerHTML={{ __html: content }}
         />
       </div>
     </div>

@@ -9,7 +9,7 @@ type Props = {
   post: Post;
 };
 
-const ArticleSimmary: React.FC<Props> = (props) => {
+const ArticleSummary: React.FC<Props> = (props) => {
   const { id, title, createdAt, categories, content } = props.post;
 
   const createdAt2 = formatIso8601ToJpDateTime(createdAt);
@@ -43,4 +43,4 @@ const ArticleSimmary: React.FC<Props> = (props) => {
   );
 };
 
-export default ArticleSimmary;
+export default ArticleSummary;
