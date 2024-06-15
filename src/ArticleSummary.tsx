@@ -18,7 +18,7 @@ const ArticleSimmary: React.FC<Props> = (props) => {
   return (
     <Link
       className="block mb-4 border border-stone-500 hover:border-stone-700"
-      to={`/article/${id}`}
+      to={`/articles/${id}`}
     >
       <div className="p-3">
         <div className="flex justify-between items-center">
