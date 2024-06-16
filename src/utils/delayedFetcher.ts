@@ -4,7 +4,9 @@ import axios from "axios";
 export const delayedFetcher = (delay: number = 2000) => {
   return async (url: string) => {
     const { data } = await axios.get(url);
-    await new Promise((resolve) => setTimeout(resolve, delay)); // 遅延演出
+    if (delay > 0) {
+      await new Promise((resolve) => setTimeout(resolve, delay)); // 遅延演出
+    }
     return data;
   };
 };

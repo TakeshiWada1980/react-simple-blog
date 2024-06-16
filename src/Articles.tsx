@@ -1,23 +1,16 @@
-import React from "react";
-import useSWR from "swr";
-import { BlogPostsResponse } from "./types";
 import ArticleSummary from "./ArticleSummary";
-import { delayedFetcher } from "./utils/delayedFetcher";
 import { FetchLoading } from "./FetchLoading";
 import { FetchError } from "./FetchError";
-
-const postsApiEndpoint =
-  "https://1hmfpsvto6.execute-api.ap-northeast-1.amazonaws.com/dev/posts";
+import usePosts from "./hooks/usePosts";
 
 const Articles = () => {
-  const { data, error, isLoading } = useSWR<BlogPostsResponse>(
-    postsApiEndpoint,
-    delayedFetcher(2000)
-  );
+  // usePostsフックで指定のエンドポイントからデータを取得
+  // 戻り値には取得したデータ、エラー情報、ロード中かどうかの状態、エンドポイントが含まれる
+  const { data, error, isLoading, endpoint } = usePosts();
 
   // Fetch failed
   if (error) {
-    return <FetchError apiEndpoint={postsApiEndpoint} error={error} />;
+    return <FetchError apiEndpoint={endpoint} error={error} />;
   }
 
   // Fetch in progress

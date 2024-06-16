@@ -1,28 +1,25 @@
-import React from "react";
-import useSWR from "swr";
 import { useParams } from "react-router-dom";
-import { BlogPostResponse } from "./types";
 import { formatIso8601ToJpDateTime } from "./utils/dateTimeUtils";
 import DOMPurify from "dompurify";
 import Tag from "./Tag";
-import { delayedFetcher } from "./utils/delayedFetcher";
 import { FetchLoading } from "./FetchLoading";
 import { FetchError } from "./FetchError";
-
-const postsApiEndpoint =
-  "https://1hmfpsvto6.execute-api.ap-northeast-1.amazonaws.com/dev/posts";
+import usePost from "./hooks/usePost";
 
 const Article = () => {
-  //
   const { id } = useParams<{ id: string }>();
-  const { data, error, isLoading } = useSWR<BlogPostResponse>(
-    `${postsApiEndpoint}/${id}`,
-    delayedFetcher(2000)
-  );
+  if (!id) {
+    // URL '/articles/' のとき、'/articles' にルーティングされるようにしているため、
+    // ここ（/articles:id'）で、id が undefined になることはないはず
+    throw new Error("Unexpected state: 'id' is undefined.");
+  }
+
+  // usePostフックで指定のエンドポイントからデータを取得
+  const { data, error, isLoading, endpoint } = usePost(id);
 
   // Fetch failed
   if (error) {
-    return <FetchError apiEndpoint={postsApiEndpoint} error={error} />;
+    return <FetchError apiEndpoint={endpoint} error={error} />;
   }
 
   // Fetch in progress
