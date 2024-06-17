@@ -1,39 +1,51 @@
+/* Contact.tsx で使用するスタイルシート */
+
+/* label要素、input要素、validateMsg(p)要素のコンテナ */
 .container {
   @apply flex mt-6 flex-col md:flex-row w-full;
 }
 
+/* labelのスタイル */
 .label {
   @apply w-full md:w-2/12 md:mt-3 mb-2;
 }
 
+/* input要素とvalidateMsg(p)要素のコンテナ */
 .subContainer {
   @apply w-full md:w-10/12;
 }
 
+/* テキストボックスとテキストエリアのスタイル */
 .input {
   @apply w-full px-3 py-3 border rounded-md duration-200 focus:outline-none focus:ring-2 focus:ring-slate-700 focus:border-transparent;
 }
 
+/* テキストボックスとテキストエリアののスタイル（無効時）*/
 .disabledInput {
   @apply hover:cursor-not-allowed bg-gray-100;
 }
 
+/* 検証エラー表示用のスタイル pタグに適用 */
 .validationMessage {
   @apply text-red-500 text-sm mt-1;
 }
 
+/* 「送信」と「クリア」の共通のボタンスタイル */
 .button {
   @apply px-4 py-2 font-bold rounded-md;
 }
 
+/* 「送信」と「クリア」の共通のボタンスタイル（無効時）*/
+.disabledButton {
+  @apply bg-gray-100 text-gray-400 hover:bg-gray-100 hover:text-gray-400 hover:cursor-not-allowed;
+}
+
+/* 「送信」ボタンのスタイル */
 .submitButton {
   @apply bg-slate-600 hover:bg-slate-800 text-white;
 }
 
+/* 「クリア」ボタンのスタイル */
 .clearButton {
   @apply bg-slate-300 hover:bg-slate-400 text-slate-700 hover:text-slate-50;
-}
-
-.disabledButton {
-  @apply bg-gray-100 text-gray-400 hover:bg-gray-100 hover:text-gray-400 hover:cursor-not-allowed;
 }

@@ -9,10 +9,11 @@ import { FetchLoading } from "./FetchLoading";
 import styles from "./styles/Contact.module.css";
 import cn from "classnames";
 
-const fetcher = delayedPostFetcher<FormData, FormSubmissionResponse>(3000);
+// 動作確認のために、応答遅延を設定した fetcher を使用
+const fetcher = delayedPostFetcher<FormData, FormSubmissionResponse>(2000);
 
 const Contact = () => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false); // 送信中かどうかの状態
 
   // prettier-ignore
   const {
@@ -21,7 +22,7 @@ const Contact = () => {
 
   const onSubmit = async (data: FormData) => {
     setIsSubmitting(true);
-    // console.log(JSON.stringify(data)); // フォームの入力内容を確認するためのデバッグ用
+    // console.log(JSON.stringify(data)); // フォームの入力内容を確認(デバッグ用)
     try {
       const res = await fetcher(contactApiEndpoint, data);
       if (res.message === "success!") {
@@ -29,10 +30,10 @@ const Contact = () => {
         alert("フォーム送信が完了しました。");
         reset();
       } else {
-        console.error(`フォーム送信失敗 \n${JSON.stringify(res)}`);
+        alert(`フォーム受付失敗 \n${JSON.stringify(res)}`);
       }
     } catch (error) {
-      console.error(`フォーム送信に失敗しました。${error}`);
+      alert(`フォーム送信失敗 \n${error}`);
     } finally {
       setIsSubmitting(false);
     }

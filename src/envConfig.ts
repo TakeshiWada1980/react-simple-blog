@@ -4,7 +4,7 @@ import { urlPattern } from "./utils/common";
  * 環境変数からAPIエンドポイントを取得して有効なURLであるかを検証
  * @param {string} envVarName - 環境変数の名前
  * @returns {string} - 検証済みのAPIエンドポイントURL
- * @throws {Error} - 環境変数が未定義、無効なURLの場合に例外が発生
+ * @throws {Error} - 環境変数が未定義、無効なURLのときは例外をスロー
  */
 const getApiEndpoint = (envVarName: string): string => {
   const endpoint = process.env[envVarName];
@@ -17,9 +17,12 @@ const getApiEndpoint = (envVarName: string): string => {
   return endpoint;
 };
 
+// ブログ記事を取得(GET)するAPIエンドポイント
 export const postsApiEndpoint = getApiEndpoint(
   "REACT_APP_BLOG_POSTS_API_ENDPOINT"
 );
+
+// お問い合わせ内容を送信(POST)するAPIエンドポイント
 export const contactApiEndpoint = getApiEndpoint(
   "REACT_APP_CONTACT_API_ENDPOINT"
 );
