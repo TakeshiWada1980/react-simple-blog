@@ -16,3 +16,14 @@ export type BlogPostsResponse = {
   message: string;
   posts: Post[];
 };
+
+export type FormData = {
+  name: string;
+  email: string;
+  message: string;
+};
+
+export type FormSubmissionResponse = {
+  message: string;
+  data: FormData;
+};

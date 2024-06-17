@@ -5,8 +5,8 @@ import axios from "axios";
  * @param number
  * @returns (url: string) => Promise<any>
  */
-export const delayedFetcher = (delay: number = 2000) => {
-  return async (url: string) => {
+export const delayedGetFetcher = <T>(delay: number = 2000) => {
+  return async (url: string): Promise<T> => {
     const { data } = await axios.get(url);
     if (delay > 0) {
       await new Promise((resolve) => setTimeout(resolve, delay)); // 遅延演出
