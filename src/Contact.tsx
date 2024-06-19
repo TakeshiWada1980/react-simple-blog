@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { validationSchema } from "./utils/contactFormValidationSchema";
@@ -6,22 +5,55 @@ import { FormData, FormSubmissionResponse } from "./types";
 import { contactApiEndpoint } from "./envConfig";
 import { delayedPostFetcher } from "./utils/delayedPostFetcher";
 import { FetchLoading } from "./FetchLoading";
-import styles from "./styles/Contact.module.css";
+import ErrorMessage from "./ErrorMessage";
 import cn from "classnames";
+
+// スタイル設定
+const styles = {
+  // label要素、input要素、validateMsg(p)要素のコンテナ
+  container: "flex mt-6 flex-col md:flex-row w-full",
+
+  // labelのスタイル
+  label: "w-full md:w-2/12 md:mt-3 mb-2",
+
+  // input要素とvalidateMsg(p)要素のコンテナ
+  subContainer: "w-full md:w-10/12",
+
+  // テキストボックスとテキストエリアのスタイル
+  input:
+    "w-full px-3 py-3 border rounded-md duration-200 focus:outline-none focus:ring-2 focus:ring-slate-700 focus:border-transparent",
+
+  // テキストボックスとテキストエリアののスタイル（無効時）
+  disabledInput: "hover:cursor-not-allowed bg-gray-100",
+
+  // 検証エラー表示用のスタイル pタグに適用
+  validationMessage: "text-red-500 text-sm mt-1",
+
+  // 「送信」と「クリア」の共通のボタンスタイル
+  button: "px-4 py-2 font-bold rounded-md",
+
+  // 「送信」ボタンのスタイル
+  submitButton: "bg-slate-600 hover:bg-slate-800 text-white",
+
+  // 「クリア」ボタンのスタイル
+  clearButton:
+    "bg-slate-300 hover:bg-slate-400 text-slate-700 hover:text-slate-50",
+
+  // 「送信」と「クリア」の共通のボタンスタイル（無効時）
+  disabledButton:
+    "bg-gray-100 text-gray-400 hover:bg-gray-100 hover:text-gray-400 hover:cursor-not-allowed",
+};
 
 // 動作確認のために、応答遅延を設定した fetcher を使用
 const fetcher = delayedPostFetcher<FormData, FormSubmissionResponse>(2000);
 
 const Contact = () => {
-  const [isSubmitting, setIsSubmitting] = useState(false); // 送信中かどうかの状態
-
   // prettier-ignore
   const {
-    reset, register, handleSubmit, formState: { errors },
+    reset, register, handleSubmit, formState: { errors, isSubmitting },
   } = useForm<FormData>({ mode: "onChange",resolver: zodResolver(validationSchema)});
 
   const onSubmit = async (data: FormData) => {
-    setIsSubmitting(true);
     // console.log(JSON.stringify(data)); // フォームの入力内容を確認(デバッグ用)
     try {
       const res = await fetcher(contactApiEndpoint, data);
@@ -30,12 +62,10 @@ const Contact = () => {
         alert("フォーム送信が完了しました。");
         reset();
       } else {
-        alert(`フォーム受付失敗 \n${JSON.stringify(res)}`);
+        throw new Error(`Server Response => ${JSON.stringify(res)}`);
       }
     } catch (error) {
-      alert(`フォーム送信失敗 \n${error}`);
-    } finally {
-      setIsSubmitting(false);
+      alert(`フォーム送信失敗\n${error}`);
     }
   };
 
@@ -62,7 +92,7 @@ const Contact = () => {
               placeholder="お名前を入力してください。"
               disabled={isSubmitting}
             />
-            <p className={styles.validationMessage}>{errors.name?.message}</p>
+            <ErrorMessage message={errors.name?.message} />
           </div>
         </div>
         {/* メールアドレス */}
@@ -79,7 +109,7 @@ const Contact = () => {
               placeholder="メールアドレスを入力してください。"
               disabled={isSubmitting}
             />
-            <p className={styles.validationMessage}>{errors.email?.message}</p>
+            <ErrorMessage message={errors.email?.message} />
           </div>
         </div>
         {/* 本文 */}
@@ -96,9 +126,7 @@ const Contact = () => {
               placeholder="本文を入力してください。"
               disabled={isSubmitting}
             />
-            <p className={styles.validationMessage}>
-              {errors.message?.message}
-            </p>
+            <ErrorMessage message={errors.message?.message} />
           </div>
         </div>
         {/* クリアボタンと送信ボタン */}
