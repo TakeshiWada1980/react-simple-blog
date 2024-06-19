@@ -3,10 +3,10 @@ import axios from "axios";
 /**
  * 遅延時間後にデータを返すFetcherを得る高階関数
  * @param number
- * @returns (url: string) => Promise<any>
+ * @returns (url: string) => Promise<Response>
  */
-export const delayedFetcher = (delay: number = 2000) => {
-  return async (url: string) => {
+export const delayedGetFetcher = <Response>(delay: number = 2000) => {
+  return async (url: string): Promise<Response> => {
     const { data } = await axios.get(url);
     if (delay > 0) {
       await new Promise((resolve) => setTimeout(resolve, delay)); // 遅延演出
